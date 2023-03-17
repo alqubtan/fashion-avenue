@@ -1,4 +1,4 @@
-import Directory from "../../Components/directory/directory.component.jsx";
+import Directory from "../../Components/directory/directory.component";
 import { Outlet } from "react-router-dom";
 import { Fragment } from "react";
 function Home() {
