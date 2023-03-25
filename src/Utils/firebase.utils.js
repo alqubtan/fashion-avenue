@@ -1,6 +1,12 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
-import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  getAuth,
+  signInWithPopup,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 // TODO: Replace the following with your app's Firebase project configuration
 const firebaseConfig = {
@@ -13,18 +19,26 @@ const firebaseConfig = {
 };
 const firebaseApp = initializeApp(firebaseConfig);
 
-const provider = new GoogleAuthProvider();
+const GoogleProvider = new GoogleAuthProvider();
 
-provider.setCustomParameters({
+GoogleProvider.setCustomParameters({
   prompt: "select_account",
 });
 
 export const auth = getAuth();
-export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
+
+// Sign up with popup component
+export const signInWithGooglePopup = () =>
+  signInWithPopup(auth, GoogleProvider);
 
 const db = getFirestore();
 
-export const CreateUserDocumentFromAuth = async (UserAuth) => {
+// Sign up via userAuth
+export const CreateUserDocumentFromAuth = async (
+  UserAuth,
+  additionalInformation = {}
+) => {
+  if (!UserAuth) return;
   const UserDocRef = doc(db, "users", UserAuth.uid);
 
   const UserSnapchot = await getDoc(UserDocRef);
@@ -39,6 +53,7 @@ export const CreateUserDocumentFromAuth = async (UserAuth) => {
         email,
         photoURL,
         createdAt,
+        ...additionalInformation,
       });
     } catch (error) {
       console.log("error creating user", error.message);
@@ -46,4 +61,13 @@ export const CreateUserDocumentFromAuth = async (UserAuth) => {
   }
 
   return UserDocRef;
+};
+
+export const CreateAuthUserFromEmailAndPassword = async (email, password) => {
+  if (!email || !password) return;
+  return await createUserWithEmailAndPassword(auth, email, password);
+};
+export const SignInAuthUserFromEmailAndPassword = async (email, password) => {
+  if (!email || !password) return;
+  return await signInWithEmailAndPassword(auth, email, password);
 };
