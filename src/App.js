@@ -2,9 +2,8 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./Routes/home/home.component";
 import Navigation from "./Routes/navigation/navigation.component";
 import Authentication from "./Routes/authentication/authentication.component";
+import Shop from "./Routes/shop/shop.component";
 const App = () => {
-  const Shop = () => <h1>shop component</h1>;
-
   return (
     <Routes>
       <Route path="/" element={<Navigation />}>

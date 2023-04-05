@@ -50,6 +50,7 @@ const SignUpForm = () => {
 
       // save user to the db
       await CreateUserDocumentFromAuth(user, { displayName });
+
       // clear form
       ResetFields();
     } catch (error) {

@@ -6,6 +6,8 @@ import {
   signInWithPopup,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
 } from "firebase/auth";
 
 // TODO: Replace the following with your app's Firebase project configuration
@@ -71,3 +73,8 @@ export const SignInAuthUserFromEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
   return await signInWithEmailAndPassword(auth, email, password);
 };
+
+export const SignOutUser = async () => await signOut(auth);
+
+export const onAuthStateChangedListner = (callback) =>
+  onAuthStateChanged(auth, callback);
